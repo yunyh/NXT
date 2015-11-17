@@ -1,6 +1,8 @@
 package com.example.younghyub.nxtbluetooth;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +25,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
     Button circle;
     Button square;
+    private Button draw;
     private Button mConnect;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,7 @@ public class MainActivity extends Activity implements OnClickListener {
         setContentView(R.layout.activity_main);
         circle = (Button) findViewById(R.id.btnCircle);
         square = (Button) findViewById(R.id.btnSquare);
+        draw = (Button) findViewById(R.id.btnDraw);
         mConnect = (Button) findViewById(R.id.btnConnect);
         mConnect.setOnClickListener(this);
         circle.setOnClickListener(this);
@@ -54,6 +58,11 @@ public class MainActivity extends Activity implements OnClickListener {
                 break;
             case R.id.btnConnect:
                 mBluetoothService.BluetoothDeviceList();
+                break;
+            case R.id.btnDraw:
+                FragmentManager fm = getFragmentManager();
+                Fragment fragment = new DrawFragment();
+                fm.beginTransaction().replace(R.id.container, fragment);
                 break;
         }
     }
