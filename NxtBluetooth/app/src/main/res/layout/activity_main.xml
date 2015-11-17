@@ -1,47 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ListView
-        android:id="@+id/device_list"
-        android:layout_width="match_parent"
-        android:layout_height="250dp">
-    </ListView>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
-        <Button
-            android:id="@+id/btnConnect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="connect"
-            android:layout_gravity="center_horizontal" />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="right">
         <Button
-            android:id="@+id/btnCircle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Circle"/>
-        <Button
-            android:id="@+id/btnSquare"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Square"/>
-        <Button
-            android:id="@+id/btnDraw"
+            android:id="@+id/btnSend"
             android:layout_height="wrap_content"
             android:layout_width = "wrap_content"
-            android:text="draw"
+            android:text="SEND"
             />
-
     </LinearLayout>
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.example.younghyub.nxtbluetooth.DrawFragment"
+        tools:layout="@layout/fragment_draw" />
 
 </LinearLayout>

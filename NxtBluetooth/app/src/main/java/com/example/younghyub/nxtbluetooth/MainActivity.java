@@ -23,10 +23,8 @@ public class MainActivity extends Activity implements OnClickListener {
     private BluetoothService mBluetoothService;
     private Handler mHandler;
 
-    Button circle;
-    Button square;
-    private Button draw;
-    private Button mConnect;
+    private Button btnSend;
+   // private Button mConnect;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,30 +37,17 @@ public class MainActivity extends Activity implements OnClickListener {
 
         mBluetoothService = new BluetoothService(this, mHandler);
         setContentView(R.layout.activity_main);
-        circle = (Button) findViewById(R.id.btnCircle);
-        square = (Button) findViewById(R.id.btnSquare);
-        draw = (Button) findViewById(R.id.btnDraw);
-        mConnect = (Button) findViewById(R.id.btnConnect);
-        mConnect.setOnClickListener(this);
-        circle.setOnClickListener(this);
-        square.setOnClickListener(this);
+        btnSend = (Button) findViewById(R.id.btnSend);
+        btnSend.setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId())
         {
-            case R.id.btnCircle:
-                break;
-            case R.id.btnSquare:
-                break;
-            case R.id.btnConnect:
-                mBluetoothService.BluetoothDeviceList();
-                break;
-            case R.id.btnDraw:
-                FragmentManager fm = getFragmentManager();
-                Fragment fragment = new DrawFragment();
-                fm.beginTransaction().replace(R.id.container, fragment);
+            case R.id.btnSend:
+
                 break;
         }
     }

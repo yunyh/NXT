@@ -41,7 +41,7 @@ public class BluetoothService extends Handler {
     }
 
     public void BluetoothDeviceList() {
-        mListView = (ListView) mActivity.findViewById(R.id.device_list);
+      //  mListView = (ListView) mActivity.findViewById(R.id.device_list);
         mArrayAdapter = new ArrayAdapter<String>(mActivity, android.R.layout.simple_list_item_1);
         mListView.setAdapter(mArrayAdapter);
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
