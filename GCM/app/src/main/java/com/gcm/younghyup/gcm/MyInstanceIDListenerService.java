@@ -5,22 +5,20 @@ import android.content.Intent;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
+import com.google.android.gms.iid.InstanceIDListenerService;
+
+import java.io.IOException;
 
 /**
  * Created by YoungHyup on 2015-12-02.
  */
-public class MyInstanceIDListenerService extends IntentService {
+public class MyInstanceIDListenerService extends InstanceIDListenerService {
 
-
-
-    public MyInstanceIDListenerService(String name) {
-        super(name);
-    }
+    private static final String TAG = "MyInstanceIDLS";
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-        InstanceID instanceID = InstanceID.getInstance(this);
-        String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
-                GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+    public void onTokenRefresh() {
+        Intent intent = new Intent(this, RegistrationIntentService.class);
+        startService(intent);
     }
 }
