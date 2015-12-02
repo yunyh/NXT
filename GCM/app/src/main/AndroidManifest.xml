@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".MainManager.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
@@ -38,7 +38,7 @@
         </receiver>
         <!-- gcm listener-->
         <service
-            android:name="com.gcm.younghyup.gcm.MyGcmListenerService"
+            android:name=".MainManager.MyGcmListenerService"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -46,7 +46,7 @@
         </service>
         <!-- instanceId listener-->
         <service
-            android:name="com.gcm.younghyup.gcm.MyInstanceIDListenerService"
+            android:name=".MainManager.MyInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID"/>
@@ -54,7 +54,7 @@
         </service>
 
         <service
-            android:name="com.gcm.younghyup.gcm.RegistrationIntentService"
+            android:name=".MainManager.RegistrationIntentService"
             android:exported="false">
         </service>
 
