@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\dbsdu\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.6.0\98476622f10715998eacf9240d6b479f12c66143\okio-1.6.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="98476622f10715998eacf9240d6b479f12c66143">
+        <dex dex="D:\workspace\NXT\nxt-remote-control-master1\app\build\intermediates\pre-dexed\debug\okio-1.6.0-e3bf51693b3018fe9f83ab4597abee5033257cfd.jar" />
+    </item>
+    <item
+        jar="C:\Users\dbsdu\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.3.1\ecb6e1f8e4b0e84c4b886c2f14a1500caf309757\gson-2.3.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
+        <dex dex="D:\workspace\NXT\nxt-remote-control-master1\app\build\intermediates\pre-dexed\debug\gson-2.3.1-b947196b810252e0cf53a0b7dd817c32d23c960e.jar" />
+    </item>
+    <item
+        jar="C:\Users\dbsdu\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit\converter-gson\2.0.0-beta2\392c3d09e0f5e7087544093cc0cb23bb9c7af5fa\converter-gson-2.0.0-beta2.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="392c3d09e0f5e7087544093cc0cb23bb9c7af5fa">
+        <dex dex="D:\workspace\NXT\nxt-remote-control-master1\app\build\intermediates\pre-dexed\debug\converter-gson-2.0.0-beta2-19cb316d54c86e3cad1b8211adfc5ec6467230e7.jar" />
+    </item>
+    <item
+        jar="C:\Users\dbsdu\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp\okhttp\2.5.0\4de2b4ed3445c37ec1720a7d214712e845a24636\okhttp-2.5.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="4de2b4ed3445c37ec1720a7d214712e845a24636">
+        <dex dex="D:\workspace\NXT\nxt-remote-control-master1\app\build\intermediates\pre-dexed\debug\okhttp-2.5.0-d6eff439131e56af9f84c600e680e5fa153223c3.jar" />
+    </item>
+    <item
+        jar="C:\Users\dbsdu\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit\retrofit\2.0.0-beta2\880d9e0997b2d1bfc98e0d121ced33ee5d04aac4\retrofit-2.0.0-beta2.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="880d9e0997b2d1bfc98e0d121ced33ee5d04aac4">
+        <dex dex="D:\workspace\NXT\nxt-remote-control-master1\app\build\intermediates\pre-dexed\debug\retrofit-2.0.0-beta2-4f5be1cfa91eec8f37d8aabdc8f5daa37a857265.jar" />
+    </item>
+
+</items>
