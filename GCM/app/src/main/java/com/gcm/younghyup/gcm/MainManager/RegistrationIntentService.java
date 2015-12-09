@@ -28,6 +28,7 @@ public class RegistrationIntentService extends IntentService {
 
     private static final String TAG = "RegistrationIntentService";
     private static final String TAG_2 = "ServerMessage";
+    private static final String CLIENT = "Client";
     private static final String[] TOPICS = {"global"};
 
     public RegistrationIntentService() {
@@ -57,7 +58,7 @@ public class RegistrationIntentService extends IntentService {
         //add server
 
         RestRequest.APIService service = new RestRequest().getService();
-        Call<Item> itemCall = service.sendID(token);
+        Call<Item> itemCall = service.sendID(token, CLIENT);
         itemCall.enqueue(new Callback<Item>() {
             @SuppressLint("LongLogTag")
             @Override

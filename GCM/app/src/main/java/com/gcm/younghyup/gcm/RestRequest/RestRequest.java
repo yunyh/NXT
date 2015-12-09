@@ -26,9 +26,9 @@ public class RestRequest {
 
     public interface APIService {
         @FormUrlEncoded
-        @PUT("/api/user/gcm/")
+        @PUT("/api/user/gcm/{devicetype}")
         Call<Item> sendID(
-                @Field("id") String id);
+                @Field("id") String id, @Path("devicetype") String type);
 
         @FormUrlEncoded
         @POST("/api/user/confirm")
