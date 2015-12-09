@@ -80,6 +80,12 @@ public class NxtMain {
 			@Override
 			public void buttonReleased(Button b) {
 				// TODO Auto-generated method stub
+
+			}
+			
+			@Override
+			public void buttonPressed(Button b) {
+				// TODO Auto-generated method stub
 				try {
 					if(getState() == CONNECTED){
 						setState(DISCONNECTED);
@@ -96,11 +102,6 @@ public class NxtMain {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
-			
-			@Override
-			public void buttonPressed(Button b) {
-				// TODO Auto-generated method stub
 			
 			}
 		});
