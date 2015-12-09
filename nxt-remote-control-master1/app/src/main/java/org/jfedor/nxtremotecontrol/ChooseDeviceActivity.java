@@ -34,7 +34,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -44,9 +48,17 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+
+import org.jfedor.nxtremotecontrol.GcmManager.QuickstartPreferences;
+import org.jfedor.nxtremotecontrol.GcmManager.RegistrationIntentService;
 
 public class ChooseDeviceActivity extends Activity {
-    
+
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     public static String EXTRA_DEVICE_ADDRESS = "device_address";
     
     private ArrayAdapter<String> mPairedDevicesArrayAdapter;
@@ -103,6 +115,11 @@ public class ChooseDeviceActivity extends Activity {
             findViewById(R.id.title_paired_devices).setVisibility(View.VISIBLE);
             findViewById(R.id.no_devices).setVisibility(View.GONE);
         }
+
+        if(checkPlayService()){
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
     }
 
     @Override
@@ -114,6 +131,19 @@ public class ChooseDeviceActivity extends Activity {
         }
         
         this.unregisterReceiver(mReceiver);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        registerReceiver();
+    }
+
+    public void registerReceiver(){
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(QuickstartPreferences.REGISTRATION_COMPLETE);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver,
+                intentFilter);
     }
 
     private void doDiscovery() {
@@ -154,7 +184,7 @@ public class ChooseDeviceActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if ((device.getBondState() != BluetoothDevice.BOND_BONDED) && (device.getBluetoothClass().getDeviceClass() == BluetoothClass.Device.TOY_ROBOT)) {
@@ -167,6 +197,30 @@ public class ChooseDeviceActivity extends Activity {
                 setTitle("Select device");
                 findViewById(R.id.button_scan).setVisibility(View.VISIBLE);
             }
+            if(QuickstartPreferences.REGISTRATION_COMPLETE.equals(action)){
+                boolean sentToken = sharedPreferences.getBoolean(QuickstartPreferences.SEND_TOKEN_TO_SERVER, false);
+                if(sentToken){
+                    Toast.makeText(context,"Registration ID", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(context,"Can't Registration ID", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     };
+
+    private boolean checkPlayService(){
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if(resultCode != ConnectionResult.SUCCESS){
+            if(apiAvailability.isUserResolvableError(resultCode)){
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            }else{
+                Log.i("GCM Regi", "This device is not support");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
 }

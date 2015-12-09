@@ -8,6 +8,8 @@ import com.google.gson.annotations.SerializedName;
 public class Item {
     @SerializedName("id")
     private String id;
+    @SerializedName("status")
+    private boolean status;
 
     public String getId() {
         return id;
@@ -16,5 +18,9 @@ public class Item {
     public void setId(String id) {
         this.id = id;
 
+    }
+
+    public void setStatus(boolean s){
+        status = s;
     }
 }

@@ -30,6 +30,10 @@ public class RestRequest {
         Call<Item> sendAlert(
                 @Field("alert") String alert);
 
+        @FormUrlEncoded
+        @PUT("/api/user/gcm/{devicetype}")
+        Call<Item> sendID(
+                @Field("id") String id, @Path("devicetype") String type);
     }
 }
 /*

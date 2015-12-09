@@ -18,6 +18,7 @@ import android.widget.ShareActionProvider;
 
 import com.gcm.younghyup.gcm.R;
 import com.google.android.gms.gcm.GcmListenerService;
+import com.google.android.gms.gcm.GcmReceiver;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
@@ -39,9 +40,9 @@ public class MyGcmListenerService extends GcmListenerService{
      */
     // [START receive_message]
 
-
     @Override
     public void onMessageReceived(String from, Bundle data) {
+
         String message = data.getString("message");
         Log.d(TAG, "From : " + from);
         Log.d(TAG, "Data : " + data);
@@ -54,15 +55,11 @@ public class MyGcmListenerService extends GcmListenerService{
         sendNotification(message);
         super.onMessageReceived(from, data);
 
-        //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-           // sharedPreferences.edit().putBoolean(QuickstartPreferences.SEND_TOKEN_TO_SERVER, true).apply();
-        //LocalBroadcastManager.getInstance(this).registerReceiver();
         Intent intent = new Intent(QuickstartPreferences.RECEIVE_ALERT_TO_SERVER);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.edit().putBoolean(QuickstartPreferences.RECEIVE_ALERT_TO_SERVER, true).apply();
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 }
-
     /**
      *
      * @param message
@@ -86,6 +83,5 @@ public class MyGcmListenerService extends GcmListenerService{
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
-
 
 }

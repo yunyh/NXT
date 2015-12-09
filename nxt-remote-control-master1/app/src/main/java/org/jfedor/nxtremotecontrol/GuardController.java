@@ -4,8 +4,10 @@ package org.jfedor.nxtremotecontrol;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
@@ -15,6 +17,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
+import org.jfedor.nxtremotecontrol.GcmManager.QuickstartPreferences;
 import org.jfedor.nxtremotecontrol.RestRequest.Item;
 import org.jfedor.nxtremotecontrol.RestRequest.RestRequest;
 
@@ -62,6 +66,7 @@ public class GuardController extends Activity implements OnSharedPreferenceChang
     private PowerManager mPowerManager;
     private PowerManager.WakeLock mWakeLock;
     private NXTTalker mNXTTalker;
+    private BroadcastReceiver mReceiver;
     
     private int mState = NXTTalker.STATE_NONE;
     private int mSavedState = NXTTalker.STATE_NONE;
@@ -126,6 +131,24 @@ public class GuardController extends Activity implements OnSharedPreferenceChang
         setupUI();
         
         mNXTTalker = new NXTTalker(mHandler);
+        mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                if(QuickstartPreferences.RECEIVE_DEACTIVATION_TO_SERVER.equals(action)){
+                    boolean set = sharedPreferences.getBoolean(QuickstartPreferences.SEND_TOKEN_TO_SERVER, false);
+                    if(set){
+                        Toast.makeText(context,"Start Detecting", Toast.LENGTH_SHORT).show();
+                        sharedPreferences.edit().putBoolean(QuickstartPreferences.RECEIVE_DEACTIVATION_TO_SERVER, false).apply();
+                        mNXTTalker.ReStartingPatrol(true);
+                    }
+                    else{
+                        Toast.makeText(context,"Already Detecting", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        };
     }
 
     private class DirectionButtonOnTouchListener implements OnTouchListener {
@@ -291,6 +314,15 @@ public class GuardController extends Activity implements OnSharedPreferenceChang
             //XXX?
             break;
         }
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(QuickstartPreferences.RECEIVE_DEACTIVATION_TO_SERVER);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver,
+                intentFilter);
     }
 
     @Override

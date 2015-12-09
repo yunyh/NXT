@@ -30,25 +30,9 @@ public class RestRequest {
         Call<Item> sendID(
                 @Field("id") String id);
 
+        @FormUrlEncoded
+        @POST("/api/user/confirm")
+        Call<Item> sendConfirm(
+            @Field("status") boolean status);
     }
 }
-/*
-class RestCookieManager extends CookieManager {
-
-    private String currentCookie;
-
-    @Override
-    public void put(URI uri, Map<String, List<String>> stringListMap) throws IOException {
-        super.put(uri, stringListMap);
-        if (stringListMap != null && stringListMap.get("Set-Cookie") != null)
-            for (String string : stringListMap.get("Set-Cookie")) {
-                if (string.contains("session")) {
-                    currentCookie = string;
-                }
-            }
-    }
-
-    public String getCurrentCookie() {
-        return currentCookie;
-    }
-}*/

@@ -12,4 +12,3 @@
 		android:layout_weight="1"></org.jfedor.nxtremotecontrol.TouchPadView>
 
 </LinearLayout>
-<!-- From: file:/D:/workspace/NXT/nxt-remote-control-master1/app/src/main/res/layout-land/main_touchpad.xml -->

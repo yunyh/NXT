@@ -24,8 +24,11 @@
 
 package org.jfedor.nxtremotecontrol;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.UUID;
@@ -34,14 +37,21 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.widget.Toast;
 
 public class NXTTalker {
 
     public static final int STATE_NONE = 0;
     public static final int STATE_CONNECTING = 1;
     public static final int STATE_CONNECTED = 2;
+    public static final int STATE_ALERT = 3;
+
+    public static final String TAG = "NXTTalker";
+    public static final String ALERT = "alert";
     
     private int mState;
     private Handler mHandler;
@@ -55,7 +65,6 @@ public class NXTTalker {
         setHandler(handler);
         setState(STATE_NONE);
     }
-
     private synchronized void setState(int state) {
         mState = state;
         if (mHandler != null) {
@@ -147,11 +156,13 @@ public class NXTTalker {
     
     private void connectionFailed() {
         setState(STATE_NONE);
+
         //toast("Connection failed");
     }
     
     private void connectionLost() {
         setState(STATE_NONE);
+
         //toast("Connection lost");
     }
     
@@ -214,7 +225,14 @@ public class NXTTalker {
         }
         write(data);
     }
-    
+
+    public void ReStartingPatrol(boolean flags){
+        byte[] message;
+        message = new String("Patrol").getBytes();
+        setState(STATE_CONNECTED);
+
+        write(message);
+    }
     private void write(byte[] out) {
         ConnectedThread r;
         synchronized (this) {
@@ -272,6 +290,8 @@ public class NXTTalker {
             try {
                 if (mmSocket != null) {
                     mmSocket.close();
+
+                    Log.d("Bluetooth", "Disconnet");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -292,6 +312,7 @@ public class NXTTalker {
             try {
                 tmpIn = socket.getInputStream();
                 tmpOut = socket.getOutputStream();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -303,11 +324,27 @@ public class NXTTalker {
         public void run() {
             byte[] buffer = new byte[1024];
             int bytes;
-            
+            BufferedReader bufferedReader;
+            String readMessage;
+
             while (true) {
                 try {
-                    bytes = mmInStream.read(buffer);
-                    toast(Integer.toString(bytes) + " bytes read from device");
+                    if(mmInStream.available() > 0){
+                        Log.d(TAG, Integer.toString(mmInStream.read(buffer)));
+                        bufferedReader = new BufferedReader(new InputStreamReader(mmInStream));
+                        //bytes = mmInStream.read();
+                        //toast(Integer.toString(bytes) + " bytes read from device");
+                        toast(bufferedReader.toString());
+                        //Log.d(TAG, Integer.toString(bytes));
+                        //String bts = new String(buffer);
+
+                        Log.d(TAG, bufferedReader.toString());
+                        readMessage = bufferedReader.toString();
+                        if(readMessage.equals(ALERT) && mState != STATE_ALERT){
+                            setState(STATE_ALERT);
+                            alert(readMessage);
+                        }
+                    }
                     /**
                      * NXT의 블루투스 신호 구별하여 경고 메시지 일 경우 핸들러 스위치
                      * Code 주석 풀어서 설정

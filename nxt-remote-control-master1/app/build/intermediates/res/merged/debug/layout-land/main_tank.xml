@@ -24,4 +24,3 @@
 			android:visibility="gone" android:layout_gravity="center_horizontal"></Button>
 	</LinearLayout>
 </FrameLayout>
-<!-- From: file:/D:/workspace/NXT/nxt-remote-control-master1/app/src/main/res/layout-land/main_tank.xml -->

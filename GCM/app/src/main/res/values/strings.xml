@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">GCM</string>
     <string name="action_settings">Settings</string>
-    <string name="gcm_send_message">GCM Send Message</string>
-    <string name="token_error_message">token_error</string>
+    <string name="gcm_send_message">상태 양호</string>
+    <string name="token_error_message">서버 점검 중입니다.</string>
+    <string name="Status">Status</string>
+    <string name="confirm">확인</string>
+    <string name="alert">Alert</string>
 </resources>
