@@ -1,25 +1,15 @@
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.EOFException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.lang.*;
-import java.util.*;
 
 import lejos.nxt.Button;
 import lejos.nxt.ButtonListener;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
-import lejos.nxt.Settings;
 import lejos.nxt.TouchSensor;
 import lejos.nxt.UltrasonicSensor;
-import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
-import lejos.nxt.comm.NXTCommConnector;
 import lejos.nxt.comm.NXTConnection;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.navigation.DifferentialPilot;
@@ -33,13 +23,11 @@ import lejos.robotics.objectdetection.FeatureListener;
 import lejos.robotics.objectdetection.RangeFeatureDetector;
 import lejos.robotics.objectdetection.TouchFeatureDetector;
 
-public class NxtMain{
+public class NxtMain implements FeatureListener{
 	
 	private static final int DETECTING = 0;
 	private static final int CONNECTED = 1;
-	private static final int STOP = 2;
-	private static final int DISCONNECTED = 3;
-	private static final String PATROL = "Patrol";
+	private static final int DISCONNECTED = 2;
 	
 	private int state;
 	
@@ -84,7 +72,6 @@ public class NxtMain{
 		td1 = new TouchFeatureDetector(ts1, 4.5, 10);
 		td2 = new TouchFeatureDetector(ts2, 4.5 ,10);
 		fd = new RangeFeatureDetector(us, MAX_DETECT, 300);
-		
 		differentialPilot = new DifferentialPilot(3.22f, 19.5f, LeftMoter, RightMoter);
 		navigator = new Navigator(differentialPilot);
 		LeftMoter.setSpeed(300);
@@ -96,7 +83,7 @@ public class NxtMain{
 		point4 = new Waypoint(0,0);
 		
 		setWaypoint();
-		
+		//add navigation
 		navigator.addNavigationListener(new NavigationListener() {
 			
 			@Override
@@ -105,9 +92,11 @@ public class NxtMain{
 				
 			}
 			
+			
 			@Override
 			public void pathComplete(Waypoint waypoint, Pose pose, int sequence) {
 				// TODO Auto-generated method stub
+				//if path completed, reset way point
 				setWaypoint();
 			}
 			
@@ -121,15 +110,13 @@ public class NxtMain{
 		
 		LCD.drawString("Patrol...", 0, 1);
 		
+		//UltrasonicSensor sensor listener
 		fd.addListener(new FeatureListener() {
 			@Override
 			public void featureDetected(Feature feature, FeatureDetector detector) {
 				// TODO Auto-generated method stub
 				int range = (int)feature.getRangeReading().getRange();
-				
-			//	String alert = "alert";
-//				if(range < 10 && (getState() == DETECTING || getState() == CONNECTED)){
-				if(range < 20 || ts1.isPressed() || ts2.isPressed()){
+				if(range < 20){
 					try {
 						LCD.clear();
 						SendAlert();
@@ -143,47 +130,12 @@ public class NxtMain{
 				}
 			}
 		});
-		td1.addListener(new FeatureListener() {
-			
-			@Override
-			public void featureDetected(Feature feature, FeatureDetector detector) {
-				// TODO Auto-generated method stub
-				LCD.drawString("Left Bumper... ", 0, 1);
-				if(feature.getRangeReading().getRange() > 10){
-					try {
-						LCD.clear();
-						SendAlert();
-						//write(alert.getBytes());
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						LCD.drawString("Not Connected Bluetooth", 0, 1);
-					}
-				}
-			}
-		});
 		
-		td2.addListener(new FeatureListener() {
-			
-			@Override
-			public void featureDetected(Feature feature, FeatureDetector detector) {
-				// TODO Auto-generated method stub
-				LCD.drawString("Right Bumper... ", 0, 1);
-				if(feature.getRangeReading().getRange() > 10){
-					try {
-						LCD.clear();
-						SendAlert();
-						//write(alert.getBytes());
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						LCD.drawString("Not Connected Bluetooth", 0, 1);
-					}
-				}
-			}
-		});
+		//Bumper sensor listener
+		td1.addListener(this);
+		td2.addListener(this);
+		
 		Button.ENTER.addButtonListener(new ButtonListener() {
-			
 			@Override
 			public void buttonReleased(Button b) {
 				// TODO Auto-generated method stub
@@ -222,6 +174,7 @@ public class NxtMain{
 		return state;
 	}
 	
+	//way point set
 	public void setWaypoint(){
 		navigator.goTo(point1);
 		navigator.addWaypoint(point2);
@@ -229,32 +182,40 @@ public class NxtMain{
 		navigator.addWaypoint(point4);
 	}
 	
+	//stop motor set
 	public void stopMove(){
 		navigator.stop();
 		LeftMoter.stop();
 		RightMoter.stop();
 	}
 	
+	//shoot motor rotate set
 	public void shoot(){
 		Shooter.rotate(360);
 		
 	}
-	//정찰 시작 함수
+	
+	//Patrol method
+	//enable detection sensor's
 	public void ReStartPatrol(){
 		setState(DETECTING);
-		
 		fd.enableDetection(true);
 		td1.enableDetection(true);
+		td2.enableDetection(true);
 		setWaypoint();
 		LCD.clear();
 		LCD.drawString("Patrol...", 0, 1);
 	}
 	
+	//Shooting method
+	//call shoot() and Display status on LCD
 	public void Shooting(){
 		shoot();
 		//LCD.clear();
 		LCD.drawString("Fire!!!!", 0, 2);
 	}
+	
+	//Send alert to remote controller app
 	public synchronized void SendAlert(){
 		fd.enableDetection(false);
 		td1.enableDetection(false);
@@ -266,7 +227,7 @@ public class NxtMain{
 		write(alert.getBytes());
 	}
 	
-	//블루투스 write 함수
+	//write bluetooth
     private void write(byte[] out) {
     	ConnectTheard r;
         synchronized (this) {
@@ -278,11 +239,11 @@ public class NxtMain{
         r.write(out);
     }
 	
+    //bluetooth Thread
 	private class ConnectTheard extends Thread{
 		private NXTConnection connection = Bluetooth.waitForConnection();
 		DataInputStream dis = connection.openDataInputStream();
 	    DataOutputStream dos = connection.openDataOutputStream();
-	    //BufferedReader bufferedReader;
 	    
 	    int bytes;
 	    String message;
@@ -293,11 +254,8 @@ public class NxtMain{
 						byte[] buffer = new byte[128];
 						bytes = dis.read(buffer);
 						message = new String(buffer, 0, bytes);
-						//bufferedReader = new BufferedReader(new InputStreamReader(dis));
 						String s = new String();
-						LCD.clear();
-						//System.out.println(message);
-						
+						LCD.clear();						
 						if(message.contentEquals("confirm")){
 							ReStartPatrol();
 						}
@@ -324,6 +282,7 @@ public class NxtMain{
 	    }
 	    
 	    public void cancel() throws IOException{
+	    	setState(DISCONNECTED);
 	    	dos.close();
 	    	dis.close();
 	    	connection.close();
@@ -331,5 +290,24 @@ public class NxtMain{
 	    	LCD.drawString("Disconnected", 0, 1);
 	    }
 	   
+	}
+	
+	
+	//TouchSensor detected
+	@Override
+	public void featureDetected(Feature feature, FeatureDetector detector) {
+		// TODO Auto-generated method stub
+				
+		if(feature.getRangeReading().getRange() > 10){
+			try {
+				LCD.clear();
+				SendAlert();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				LCD.drawString("Not Connected Bluetooth", 0, 1);
+			}
+		}
+		
 	}
 }
