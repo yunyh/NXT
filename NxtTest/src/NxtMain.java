@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.String;
 
 import lejos.nxt.Button;
 import lejos.nxt.ButtonListener;
@@ -42,6 +43,7 @@ public class NxtMain {
     public NxtMain() {
 		// TODO Auto-generated constructor stub
     	mConnectTheard = new ConnectTheard();
+    	mConnectTheard.start();
     	setState(CONNECTED);
 	}
 	public static void main (String[] args) throws Exception{
@@ -62,49 +64,49 @@ public class NxtMain {
 				int range = (int)feature.getRangeReading().getRange();
 			//	String alert = "alert";
 //				if(range < 10 && (getState() == DETECTING || getState() == CONNECTED)){
-				if(range < 10){
+				if(range < 20){
 					try {
+						LCD.clear();
 						SendAlert();
 						//write(alert.getBytes());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-						LCD.clear();
 						LCD.drawString("Not Connected Bluetooth", 0, 1);
 					}
 					System.out.println("Range:" + range);					
 				}
 			}
 		});
-		Button.ENTER.addButtonListener(new ButtonListener() {			
+		
+		Button.ENTER.addButtonListener(new ButtonListener() {
+			
 			@Override
 			public void buttonReleased(Button b) {
 				// TODO Auto-generated method stub
-
+				try {
+					mConnectTheard.cancel();
+					mConnectTheard = null;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			
 			@Override
 			public void buttonPressed(Button b) {
 				// TODO Auto-generated method stub
 				try {
-					if(getState() == CONNECTED){
-						setState(DISCONNECTED);
-						mConnectTheard.cancel();
-						mConnectTheard = null;
-												
-					}
-					else if(getState() == DISCONNECTED){
-				    	mConnectTheard = new ConnectTheard();
-				    	setState(CONNECTED);
-					}
-					
+					mConnectTheard.cancel();
+					mConnectTheard = null;
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			
 			}
 		});
+		Button.ENTER.waitForPressAndRelease();
+
 	}
 	
 	//state set/get
@@ -127,6 +129,9 @@ public class NxtMain {
 	public synchronized void SendAlert(){
 		fd.enableDetection(false);
 		String alert = "alert";
+		LCD.clear();
+		LCD.drawString("Alert...", 0, 1);
+		setState(CONNECTED);
 		write(alert.getBytes());
 	}
 	
@@ -146,15 +151,23 @@ public class NxtMain {
 		private NXTConnection connection = Bluetooth.waitForConnection();
 		DataInputStream dis = connection.openDataInputStream();
 	    DataOutputStream dos = connection.openDataOutputStream();
-	    BufferedReader bufferedReader;
+	    //BufferedReader bufferedReader;
+	    byte[] buffer = new byte[256];
+	    int bytes;
+	    String message;
 	    public void run(){
 	    	while(true){
-	    		try {
+	    		try {				
 					if(dis.available() > 0){
-						bufferedReader = new BufferedReader(new InputStreamReader(dis));
-						if(bufferedReader.toString().equals(PATROL)){
-							System.out.println("Receive from Device");
-							ReStartPatrol();
+		    			System.out.println("Receive from Device");
+		    			System.out.println(dis.available());
+						bytes = dis.read(buffer);
+						message = new String(buffer, 0, bytes);
+						//bufferedReader = new BufferedReader(new InputStreamReader(dis));
+						String s = new String();
+						System.out.println(message);
+						ReStartPatrol();
+						if(message.contentEquals("Patrol")){
 						}
 					}
 				} catch (IOException e) {
@@ -162,21 +175,11 @@ public class NxtMain {
 					e.printStackTrace();
 				}
 	    	}
-	    	/*for(int i=0;i<100;i++) {
-	            int n;
-				try {
-					n = dis.readInt();
-		            LCD.drawInt(n,7,0,1);
-		            
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	    	} */
 	    }
 	    
 	    public void write(byte[] buffer){
             try {
+            	
 				dos.write(buffer);
 	            dos.flush();
 			} catch (IOException e) {

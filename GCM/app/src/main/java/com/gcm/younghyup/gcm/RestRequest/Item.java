@@ -9,7 +9,7 @@ public class Item {
     @SerializedName("id")
     private String id;
     @SerializedName("status")
-    private boolean status;
+    private String status;
 
     public String getId() {
         return id;
@@ -20,7 +20,7 @@ public class Item {
 
     }
 
-    public void setStatus(boolean s){
+    public void setStatus(String s){
         status = s;
     }
 }

@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             RestRequest.APIService service = new RestRequest().getService();
-                            Call<Item> itemCall = service.sendConfirm(true);
+                            Call<Item> itemCall = service.sendConfirm("confirm");
                             itemCall.enqueue(new Callback<Item>() {
                                 @Override
                                 public void onResponse(retrofit.Response response, Retrofit retrofit) {

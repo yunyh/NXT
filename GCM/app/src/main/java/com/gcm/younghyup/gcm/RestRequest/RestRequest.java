@@ -33,6 +33,6 @@ public class RestRequest {
         @FormUrlEncoded
         @POST("/api/user/confirm")
         Call<Item> sendConfirm(
-            @Field("status") boolean status);
+            @Field("status") String status);
     }
 }
