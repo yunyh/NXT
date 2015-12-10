@@ -227,9 +227,10 @@ public class NXTTalker {
         write(data);
     }
 
-    public void ReStartingPatrol(boolean flags){
+    public void ReStartingPatrol(String flag){
        // byte[] message;
-        String message = "Patrol";
+        String message = flag;
+        toast(flag);
         //message = new String("Patrol").getBytes();
         setState(STATE_CONNECTED);
         write(message.getBytes());
@@ -362,6 +363,7 @@ public class NXTTalker {
             try {
                 toast("Send");
                 mmOutStream.write(buffer);
+                mmOutStream.flush();
             } catch (IOException e) {
                 toast("Send");
                 e.printStackTrace();

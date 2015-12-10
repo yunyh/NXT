@@ -50,6 +50,7 @@ public class MyGcmListenerService extends GcmListenerService{
         Intent intent = new Intent(QuickstartPreferences.RECEIVE_DEACTIVATION_TO_SERVER);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.edit().putBoolean(QuickstartPreferences.RECEIVE_DEACTIVATION_TO_SERVER, true).apply();
+        sharedPreferences.edit().putString(QuickstartPreferences.MESSAGE_STATE, message).apply();
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 }
 

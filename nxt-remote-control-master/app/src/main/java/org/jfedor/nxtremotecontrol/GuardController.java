@@ -138,10 +138,19 @@ public class GuardController extends Activity implements OnSharedPreferenceChang
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
                 if(QuickstartPreferences.RECEIVE_DEACTIVATION_TO_SERVER.equals(action)){
                     boolean set = sharedPreferences.getBoolean(QuickstartPreferences.SEND_TOKEN_TO_SERVER, false);
+                    String state = sharedPreferences.getString(QuickstartPreferences.MESSAGE_STATE, null);
                     if(set){
                        // Toast.makeText(context,"Start Detecting", Toast.LENGTH_SHORT).show();
-                        sharedPreferences.edit().putBoolean(QuickstartPreferences.RECEIVE_DEACTIVATION_TO_SERVER, false).apply();
-                        mNXTTalker.ReStartingPatrol(true);
+                        if(state.equals("confirm")) {
+                            sharedPreferences.edit().putBoolean(QuickstartPreferences.RECEIVE_DEACTIVATION_TO_SERVER, false).apply();
+                            mNXTTalker.ReStartingPatrol(state);
+                        }
+                        else if(state.equals("shoot")){
+                            mNXTTalker.ReStartingPatrol(state);
+                        }
+                        else if(state == null){
+
+                        }
                     }
                     else{
                        // Toast.makeText(context,"Already Detecting", Toast.LENGTH_SHORT).show();

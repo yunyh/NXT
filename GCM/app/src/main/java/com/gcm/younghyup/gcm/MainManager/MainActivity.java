@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gcm.younghyup.gcm.R;
 import com.gcm.younghyup.gcm.RestRequest.Item;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
     private TextView mTextView;
     private Button mConfirmButton;
+    private Button mShootButton;
     private ImageView mStatusImageView;
 
     @Override
@@ -48,12 +50,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mProgressBar = (ProgressBar) findViewById(R.id.registrationProgressbar);
         mConfirmButton = (Button) findViewById(R.id.confirmButton);
+        mShootButton = (Button)findViewById(R.id.shootButton);
         mStatusImageView = (ImageView) findViewById(R.id.statusImage);
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent) {
+            public void onReceive(final Context context, Intent intent) {
                 mProgressBar.setVisibility(ProgressBar.GONE);
                 mConfirmButton.setVisibility(View.GONE);
+                mShootButton.setVisibility(View.GONE);
                 final SharedPreferences sharedPreferences =
                         PreferenceManager.getDefaultSharedPreferences(context);
                 boolean alert = sharedPreferences.getBoolean(QuickstartPreferences.RECEIVE_ALERT_TO_SERVER, false);
@@ -71,6 +75,28 @@ public class MainActivity extends AppCompatActivity {
                                     sharedPreferences.edit().putBoolean(QuickstartPreferences.RECEIVE_ALERT_TO_SERVER, false).apply();
                                     setStatusView(STATUS_GREEN);
                                 }
+
+                                @Override
+                                public void onFailure(Throwable t) {
+                                    setStatusView(STATUS_YELLOW);
+                                }
+                            });
+                        }
+                    });
+                    mShootButton.setVisibility(View.VISIBLE);
+                    mShootButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            RestRequest.APIService service = new RestRequest().getService();
+                            Call<Item> itemCall = service.sendConfirm("shoot");
+                            itemCall.enqueue(new Callback<Item>() {
+                                @Override
+                                public void onResponse(retrofit.Response response, Retrofit retrofit) {
+                                    Toast.makeText(context, "공격", Toast.LENGTH_SHORT);
+                                    //sharedPreferences.edit().putBoolean(QuickstartPreferences.RECEIVE_ALERT_TO_SERVER, false).apply();
+                                    //setStatusView(STATUS_GREEN);
+                                }
+
                                 @Override
                                 public void onFailure(Throwable t) {
                                     setStatusView(STATUS_YELLOW);
@@ -157,6 +183,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case STATUS_GREEN:
                 mTextView.setText(getString(R.string.gcm_send_message));
+                mConfirmButton.setVisibility(View.GONE);
+                mShootButton.setVisibility(View.GONE);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     mStatusImageView.setBackground(getDrawable(R.drawable.ic_green));
                 }

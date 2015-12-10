@@ -4,6 +4,10 @@
         "source": "C:\\Users\\YoungHyub\\workspace\\NXTGIT\\nxt-remote-control-master1\\app\\src\\main\\res\\drawable-ldpi\\icon.png"
     },
     {
+        "merged": "C:\\Users\\YoungHyub\\workspace\\NXTGIT\\nxt-remote-control-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\icon.png",
+        "source": "C:\\Users\\YoungHyub\\workspace\\NXTGIT\\nxt-remote-control-master\\app\\src\\main\\res\\drawable-ldpi\\icon.png"
+    },
+    {
         "merged": "C:\\Users\\YoungHyub\\Documents\\NXT\\nxt-remote-control-master1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\icon.png",
         "source": "C:\\Users\\YoungHyub\\Documents\\NXT\\nxt-remote-control-master1\\app\\src\\main\\res\\drawable-ldpi\\icon.png"
     }
