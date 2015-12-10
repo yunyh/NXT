@@ -1,6 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
 <merger version="3"><dataSet config="main"><source path="C:\Users\YoungHyub\workspace\NXTGIT\nxt-remote-control-master\app\src\androidTest\assets"/></dataSet></merger>
-=======
-<merger version="3"><dataSet config="main"><source path="D:\workspace\NXT_Github\nxt-remote-control-master1\app\src\androidTest\assets"/></dataSet></merger>
->>>>>>> 1be9a16142a6970ce086fe59ed97662233974a77

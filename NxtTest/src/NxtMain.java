@@ -163,7 +163,7 @@ public class NxtMain{
 			}
 		});
 		
-		td1.addListener(new FeatureListener() {
+		td2.addListener(new FeatureListener() {
 			
 			@Override
 			public void featureDetected(Feature feature, FeatureDetector detector) {
