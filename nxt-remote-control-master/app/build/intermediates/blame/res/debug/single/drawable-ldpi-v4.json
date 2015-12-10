@@ -1,5 +1,9 @@
 [
     {
+        "merged": "D:\\workspace\\NXT_Github\\nxt-remote-control-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\icon.png",
+        "source": "D:\\workspace\\NXT_Github\\nxt-remote-control-master\\app\\src\\main\\res\\drawable-ldpi\\icon.png"
+    },
+    {
         "merged": "C:\\Users\\YoungHyub\\workspace\\NXTGIT\\nxt-remote-control-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\icon.png",
         "source": "C:\\Users\\YoungHyub\\workspace\\NXTGIT\\nxt-remote-control-master\\app\\src\\main\\res\\drawable-ldpi\\icon.png"
     }

@@ -1,5 +1,9 @@
 [
     {
+        "merged": "D:\\workspace\\NXT_Github\\nxt-remote-control-master\\app\\build\\intermediates\\res\\merged\\debug\\xml\\settings.xml",
+        "source": "D:\\workspace\\NXT_Github\\nxt-remote-control-master\\app\\src\\main\\res\\xml\\settings.xml"
+    },
+    {
         "merged": "C:\\Users\\YoungHyub\\workspace\\NXTGIT\\nxt-remote-control-master\\app\\build\\intermediates\\res\\merged\\debug\\xml\\settings.xml",
         "source": "C:\\Users\\YoungHyub\\workspace\\NXTGIT\\nxt-remote-control-master\\app\\src\\main\\res\\xml\\settings.xml"
     }

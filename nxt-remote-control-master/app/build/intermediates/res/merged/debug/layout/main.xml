@@ -10,73 +10,16 @@
 	    android:id="@+id/LinearLayout02"
 		android:layout_height="wrap_content" 
 		android:layout_width="fill_parent"
+		android:layout_weight="1"
 		android:gravity="center" 
 		android:layout_margin="5dp">
-		
-		<org.jfedor.nxtremotecontrol.ButtonControl 
-		    android:id="@+id/button_left" 
-		    android:layout_width="wrap_content"
-			android:layout_height="wrap_content" 
-			android:layout_weight="1"
-			android:layout_gravity="bottom" 
-			android:src="@drawable/left_arrow"
-		    />
-		
-		<LinearLayout 
-		    android:id="@+id/LinearLayout04"
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
-			android:layout_weight="1" 
-			android:orientation="vertical">
-			
-			<org.jfedor.nxtremotecontrol.ButtonControl 
-			    android:id="@+id/button_up" 
-			    android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:src="@drawable/up_arrow"/>
-			
-			<org.jfedor.nxtremotecontrol.ButtonControl 
-			    android:id="@+id/button_down" 
-			    android:layout_width="wrap_content"
-				android:layout_height="wrap_content" 
-				android:layout_weight="1"
-				android:src="@drawable/down_arrow"
-				/>
-			
-		</LinearLayout>
-		<org.jfedor.nxtremotecontrol.ButtonControl 
-		    android:id="@+id/button_right" 
-		    android:layout_width="wrap_content"
-			android:layout_height="wrap_content" 
-			android:layout_weight="1"
-			android:layout_gravity="bottom" 
-			android:src="@drawable/right_arrow"/>
-	</LinearLayout>
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="fill_parent"
+			android:id="@+id/log_textview"
+			/>
 
-	<LinearLayout 
-	    android:id="@+id/LinearLayout01"
-		android:layout_height="wrap_content" 
-		android:layout_width="fill_parent"
-		android:layout_weight="2">
-		
-		<TextView 
-		    android:id="@+id/TextView02" 
-		    android:layout_width="wrap_content"
-			android:layout_height="wrap_content" 
-			android:text="Power:"
-			android:textSize="18sp" 
-			android:layout_gravity="center_vertical"/>
-		
-		<SeekBar 
-		    android:layout_height="wrap_content"
-			android:layout_width="fill_parent" 
-			android:id="@+id/power_seekbar"
-			android:max="100" 
-			android:layout_marginLeft="10dp"
-			android:layout_marginRight="10dp" 
-			android:layout_gravity="center_vertical"/>
 	</LinearLayout>
-
 
 	<LinearLayout 
 	    android:id="@+id/LinearLayout03"

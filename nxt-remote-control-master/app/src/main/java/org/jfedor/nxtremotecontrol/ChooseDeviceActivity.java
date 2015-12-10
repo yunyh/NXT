@@ -125,12 +125,11 @@ public class ChooseDeviceActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        
         if (mBtAdapter != null) {
             mBtAdapter.cancelDiscovery();
         }
-        
         this.unregisterReceiver(mReceiver);
+
     }
 
     @Override
@@ -162,6 +161,7 @@ public class ChooseDeviceActivity extends Activity {
         findViewById(R.id.title_new_devices).setVisibility(View.GONE);
         if (mPairedDevicesArrayAdapter.getCount() == 0) {
             findViewById(R.id.no_devices).setVisibility(View.VISIBLE);
+           // Intent intent = new Intent(this, GuardController.class);
         }
     }
 
@@ -201,6 +201,7 @@ public class ChooseDeviceActivity extends Activity {
                 boolean sentToken = sharedPreferences.getBoolean(QuickstartPreferences.SEND_TOKEN_TO_SERVER, false);
                 if(sentToken){
                     Toast.makeText(context,"Registration ID", Toast.LENGTH_SHORT).show();
+                    sharedPreferences.edit().putBoolean(QuickstartPreferences.SEND_TOKEN_TO_SERVER, false).apply();
                 }
                 else{
                     Toast.makeText(context,"Can't Registration ID", Toast.LENGTH_SHORT).show();
