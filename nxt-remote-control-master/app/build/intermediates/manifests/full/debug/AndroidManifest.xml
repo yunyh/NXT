@@ -47,12 +47,6 @@
             android:label="Select device"
             android:theme="@android:style/Theme.Dialog" >
         </activity>
-        <activity
-            android:name="org.jfedor.nxtremotecontrol.SettingsActivity"
-            android:label="Settings"
-            android:theme="@android:style/Theme.Dialog" >
-        </activity>
-
         <!-- gcm recevier -->
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
