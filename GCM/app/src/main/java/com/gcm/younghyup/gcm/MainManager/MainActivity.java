@@ -61,18 +61,21 @@ public class MainActivity extends AppCompatActivity {
                 final SharedPreferences sharedPreferences =
                         PreferenceManager.getDefaultSharedPreferences(context);
                 boolean alert = sharedPreferences.getBoolean(QuickstartPreferences.RECEIVE_ALERT_TO_SERVER, false);
+               // boolean atack = sharedPreferences.getBoolean(QuickstartPreferences.RECEIVE_ALERT_TO_SERVER, false);
                 if(alert) {
                     mConfirmButton.setVisibility(View.VISIBLE);
                     setStatusView(STATUS_RED);
                     mConfirmButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            mConfirmButton.setEnabled(false);
                             RestRequest.APIService service = new RestRequest().getService();
                             Call<Item> itemCall = service.sendConfirm("confirm");
                             itemCall.enqueue(new Callback<Item>() {
                                 @Override
                                 public void onResponse(retrofit.Response response, Retrofit retrofit) {
                                     sharedPreferences.edit().putBoolean(QuickstartPreferences.RECEIVE_ALERT_TO_SERVER, false).apply();
+                                    mConfirmButton.setEnabled(true);
                                     setStatusView(STATUS_GREEN);
                                 }
 
@@ -89,10 +92,12 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(View view) {
                             RestRequest.APIService service = new RestRequest().getService();
                             Call<Item> itemCall = service.sendConfirm("shoot");
+                            mShootButton.setEnabled(false);
                             itemCall.enqueue(new Callback<Item>() {
                                 @Override
                                 public void onResponse(retrofit.Response response, Retrofit retrofit) {
                                     Toast.makeText(context, "공격", Toast.LENGTH_SHORT);
+                                    mShootButton.setEnabled(true);
                                     //sharedPreferences.edit().putBoolean(QuickstartPreferences.RECEIVE_ALERT_TO_SERVER, false).apply();
                                     //setStatusView(STATUS_GREEN);
                                 }

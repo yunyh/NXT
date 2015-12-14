@@ -244,18 +244,16 @@ public class NxtMain implements FeatureListener{
 		private NXTConnection connection = Bluetooth.waitForConnection();
 		DataInputStream dis = connection.openDataInputStream();
 	    DataOutputStream dos = connection.openDataOutputStream();
-	    
+		byte[] buffer = new byte[256];
 	    int bytes;
 	    String message;
 	    public void run(){
 	    	while(true){
 	    		try {				
 					if(dis.available() > 0){
-						byte[] buffer = new byte[128];
 						bytes = dis.read(buffer);
 						message = new String(buffer, 0, bytes);
-						String s = new String();
-						LCD.clear();						
+						LCD.clear();					
 						if(message.contentEquals("confirm")){
 							ReStartPatrol();
 						}

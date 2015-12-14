@@ -201,7 +201,7 @@ public class ChooseDeviceActivity extends Activity {
                 boolean sentToken = sharedPreferences.getBoolean(QuickstartPreferences.SEND_TOKEN_TO_SERVER, false);
                 if(sentToken){
                     Toast.makeText(context,"Registration ID", Toast.LENGTH_SHORT).show();
-                    sharedPreferences.edit().putBoolean(QuickstartPreferences.SEND_TOKEN_TO_SERVER, false).apply();
+                    //sharedPreferences.edit().putBoolean(QuickstartPreferences.SEND_TOKEN_TO_SERVER, false).apply();
                 }
                 else{
                     Toast.makeText(context,"Can't Registration ID", Toast.LENGTH_SHORT).show();
